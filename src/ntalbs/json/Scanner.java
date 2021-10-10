@@ -52,30 +52,15 @@ public class Scanner {
   private void scanToken() {
     char c = advance();
     switch (c) {
-      case '{':
-        addToken(LEFT_BRACE);
-        break;
-      case '}':
-        addToken(RIGHT_BRACE);
-        break;
-      case '[':
-        addToken(LEFT_BRACKET);
-        break;
-      case ']':
-        addToken(RIGHT_BRACKET);
-        break;
-      case ':':
-        addToken(COLON);
-        break;
-      case ',':
-        addToken(COMMA);
-        break;
-      case '"':
-        string();
-        break;
-      case ' ': case '\n': case '\t': case '\r': // ignore whitespace
-        break;
-      default:
+      case '{' -> addToken(LEFT_BRACE);
+      case '}' -> addToken(RIGHT_BRACE);
+      case '[' -> addToken(LEFT_BRACKET);
+      case ']' -> addToken(RIGHT_BRACKET);
+      case ':' -> addToken(COLON);
+      case ',' -> addToken(COMMA);
+      case '"' -> string();
+      case ' ', '\n', '\t', '\r' -> {} // ignore whitespace
+      default -> {
         if (isDigit(c) || (c == '-' && isDigit(peekNext()))) {
           number();
         } else if (isAlpha(c)) {
@@ -83,6 +68,7 @@ public class Scanner {
         } else {
           throw new RuntimeException("Unexpected character.");
         }
+      }
     }
   }
 
@@ -137,8 +123,8 @@ public class Scanner {
       case "true" -> addToken(TRUE, true);
       case "false" -> addToken(FALSE, false);
       case "null" -> addToken(NULL);
-      default -> throw new RuntimeException("Unexpected token.");
-    }
+      default -> throw new RuntimeException("Unexpected token: " + text);
+    };
   }
 
   private void addToken(TokenType type) {
