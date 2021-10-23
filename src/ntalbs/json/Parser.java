@@ -39,14 +39,14 @@ public class Parser {
 
     // TODO: empty object
 
-    Json.KeyVal keyVal = keyVal();
-    if (keyVal != null) {
-      obj.keyVals.put(keyVal.key, keyVal.val);
+    Json.Member member = member();
+    if (member != null) {
+      obj.members.add(member);
     }
 
     while (match(COMMA)) {
-      keyVal = keyVal();
-      obj.keyVals.put(keyVal.key, keyVal.val);
+      member = member();
+      obj.members.add(member);
     }
 
     consume(RIGHT_BRACE, "Invalid token: expected '}'");
@@ -66,11 +66,11 @@ public class Parser {
     return arr;
   }
 
-  Json.KeyVal keyVal() {
+  Json.Member member() {
     String key = (String) string().val;
     if (!match(COLON)) throw new RuntimeException("Invalid token: expected `:` ");
     Json val = json();
-    return new Json.KeyVal(key, val);
+    return new Json.Member(key, val);
   }
 
   private Json.Literal string() {

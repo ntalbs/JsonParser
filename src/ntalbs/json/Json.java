@@ -2,13 +2,11 @@ package ntalbs.json;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Json {
   static class Obj extends Json {
-    Map<String, Json> keyVals = new HashMap<>();
+    List<Member> members = new ArrayList<>();
   }
 
   static class Arr extends Json {
@@ -19,11 +17,11 @@ public abstract class Json {
     }
   }
 
-  static class KeyVal {
+  static class Member {
     String key;
     Json val;
 
-    KeyVal(String key, Json val) {
+    Member(String key, Json val) {
       this.key = key;
       this.val = val;
     }

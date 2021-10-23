@@ -15,7 +15,10 @@ public class Main {
           "f1": "hello",
           "f2": "world",
           "arr": [{"a":10}, {"b":20}]
-        }
+        },
+        "n": [-10, 20.0, 0.003, -0.04],
+        "emptyObj": {},
+        "emptyArr": []
       }
       """;
     Scanner scanner = new Scanner(input);
