@@ -37,7 +37,10 @@ public class Parser {
   Json obj() {
     Json.Obj obj = new Json.Obj();
 
-    // TODO: empty object
+    if (check(RIGHT_BRACE)) {
+      advance();
+      return obj;
+    }
 
     Json.Member member = member();
     if (member != null) {
@@ -55,6 +58,11 @@ public class Parser {
 
   Json arr() {
     Json.Arr arr = new Json.Arr();
+
+    if (check(RIGHT_BRACKET)) {
+      advance();
+      return arr;
+    }
 
     arr.elements.add(json());
 
