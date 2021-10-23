@@ -58,15 +58,14 @@ public class Scanner {
       case ']' -> addToken(RIGHT_BRACKET);
       case ':' -> addToken(COLON);
       case ',' -> addToken(COMMA);
-      case '"' -> string();
       case ' ', '\n', '\t', '\r' -> {} // ignore whitespace
+      case '"' -> string();
+      case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> number();
       default -> {
-        if (isDigit(c) || (c == '-' && isDigit(peekNext()))) {
-          number();
-        } else if (isAlpha(c)) {
+        if (isAlpha(c)) {
           keyword();
         } else {
-          throw new RuntimeException("Unexpected character.");
+          throw new RuntimeException("Unexpected token.");
         }
       }
     }
