@@ -29,6 +29,11 @@ public class Main {
         "emptyArr": []
       }
       """;
+
+    System.out.println(">>>");
+    System.out.println(input);
+    System.out.println("<<<");
+
     Scanner scanner = new Scanner(input);
     List<Token> tokens = scanner.scanTokens();
     for (Token t : tokens) {
