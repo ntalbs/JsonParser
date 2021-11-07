@@ -19,14 +19,18 @@ import static ntalbs.json.TokenType.TRUE;
 public class Scanner {
   private final String source;
   private final List<Token> tokens;
+  private final List<Error> errors;
 
   private int start = 0;
   private int current = 0;
+
   private int line = 1;
+  private int pos = 1;
 
   public Scanner(String source) {
     this.source = source;
     this.tokens = new ArrayList<>();
+    this.errors = new ArrayList<>();
   }
 
   List<Token> scanTokens() {
@@ -35,6 +39,13 @@ public class Scanner {
       scanToken();
     }
     tokens.add(new Token(EOF, "", null, line));
+
+    if (!errors.isEmpty()) {
+      for (Error e : errors) {
+        System.out.println(e);
+      }
+      throw new RuntimeException("Scanning failed");
+    }
     return tokens;
   }
 
@@ -60,20 +71,24 @@ public class Scanner {
       case ':' -> addToken(COLON);
       case ',' -> addToken(COMMA);
       case ' ', '\t', '\r' -> {} // ignore whitespace
-      case '\n' -> line ++;
+      case '\n' -> {
+        line++;
+        pos = 0;
+      }
       case '"' -> string();
       case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> number();
       default -> {
         if (isAlpha(c)) {
           keyword();
         } else {
-          throw new RuntimeException("Unexpected token.");
+          addError("Unexpected token.");
         }
       }
     }
   }
 
   private char advance() {
+    pos++;
     return source.charAt(current++);
   }
 
@@ -92,7 +107,7 @@ public class Scanner {
       advance();
     }
     if (isAtEnd()) {
-      throw new RuntimeException("Unterminated string");
+      addError("Unterminated string");
     }
     advance();
     String value = source.substring(start + 1, current - 1);
@@ -124,7 +139,7 @@ public class Scanner {
       case "true" -> addToken(TRUE, true);
       case "false" -> addToken(FALSE, false);
       case "null" -> addToken(NULL);
-      default -> throw new RuntimeException("Unexpected token: " + text);
+      default -> addError("Unexpected token: " + text);
     };
   }
 
@@ -135,5 +150,9 @@ public class Scanner {
   private void addToken(TokenType type, Object literal) {
     String text = source.substring(start, current);
     tokens.add(new Token(type, text, literal, line));
+  }
+
+  private void addError(String message) {
+    errors.add(new Error(message, line, pos));
   }
 }
