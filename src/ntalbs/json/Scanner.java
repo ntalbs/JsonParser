@@ -40,13 +40,11 @@ public class Scanner {
     }
     tokens.add(new Token(EOF, "", null, line));
 
-    if (!errors.isEmpty()) {
-      for (Error e : errors) {
-        System.out.println(e);
-      }
-      throw new RuntimeException("Scanning failed");
+    if (errors.isEmpty()) {
+      return tokens;
+    } else {
+      throw new ScanException(errors);
     }
-    return tokens;
   }
 
   private boolean isAtEnd() {

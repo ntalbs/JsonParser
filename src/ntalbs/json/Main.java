@@ -35,9 +35,18 @@ public class Main {
     System.out.println("<<<");
 
     Scanner scanner = new Scanner(input);
-    List<Token> tokens = scanner.scanTokens();
-    for (Token t : tokens) {
-      System.out.println(t);
+    List<Token> tokens = null;
+    try {
+      tokens = scanner.scanTokens();
+
+      for (Token t : tokens) {
+        System.out.println(t);
+      }
+    } catch (ScanException x) {
+      for (Error e : x.errors()) {
+        System.err.println(e);
+      }
+      System.exit(-1);
     }
 
     Parser parser = new Parser(tokens);
