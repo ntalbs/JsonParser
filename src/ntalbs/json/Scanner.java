@@ -38,7 +38,7 @@ public class Scanner {
       start = current;
       scanToken();
     }
-    tokens.add(new Token(EOF, "", null, line));
+    addToken(EOF);
 
     if (errors.isEmpty()) {
       return tokens;
