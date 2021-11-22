@@ -43,7 +43,7 @@ public class Scanner {
     if (errors.isEmpty()) {
       return tokens;
     } else {
-      throw new ScanException(errors);
+      throw new JsonException(errors);
     }
   }
 

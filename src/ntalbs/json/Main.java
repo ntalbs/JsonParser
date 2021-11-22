@@ -42,7 +42,7 @@ public class Main {
       for (Token t : tokens) {
         System.out.println(t);
       }
-    } catch (ScanException x) {
+    } catch (JsonException x) {
       for (Error e : x.errors()) {
         System.err.println(e);
       }

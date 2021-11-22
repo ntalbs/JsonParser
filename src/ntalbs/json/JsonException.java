@@ -2,10 +2,10 @@ package ntalbs.json;
 
 import java.util.List;
 
-public class ScanException extends RuntimeException {
+public class JsonException extends RuntimeException {
   private List<Error> errors;
 
-  public ScanException(List<Error> errors) {
+  public JsonException(List<Error> errors) {
     this.errors = errors;
   }
 
