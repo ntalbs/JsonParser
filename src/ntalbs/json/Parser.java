@@ -1,5 +1,6 @@
 package ntalbs.json;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ntalbs.json.TokenType.COLON;
@@ -17,14 +18,21 @@ import static ntalbs.json.TokenType.TRUE;
 
 public class Parser {
   private final List<Token> tokens;
+  private List<Error> errors;
   private int current = 0;
 
   Parser(List<Token> tokens) {
     this.tokens = tokens;
+    this.errors = new ArrayList<>();
   }
 
   Json parse() {
-    return json();
+    Json json = json();
+    if (errors.isEmpty()) {
+      return json;
+    } else {
+      throw new JsonException(errors);
+    }
   }
 
   Json json() {
